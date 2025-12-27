@@ -65,14 +65,24 @@ clone_if_missing \
 # Install JetBrainsMono Nerd Font (Termux-safe)
 # ------------------------------
 FONT_DIR="$HOME/.termux"
+FONT_TMP="$HOME/.cache/jetbrainsmono"
 
 mkdir -p "$FONT_DIR"
+mkdir -p "$FONT_TMP"
 
 echo "Downloading JetBrainsMono Nerd Font..."
 wget -q --show-progress \
-  https://github.com/NikSneMC/JetBrainsMono-Nerd-Font/blob/main/JetBrainsMonoNLNerdFont-Bold.ttf
+  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip \
+  -O "$FONT_TMP/font.zip"
 
-FONT_FILE="JetBrainsMonoNLNerdFont-Bold.ttf"
+unzip -o "$FONT_TMP/font.zip" -d "$FONT_TMP"
+
+FONT_FILE="$FONT_TMP/JetBrainsMonoNLNerdFont-Bold.ttf"
+
+if [ -z "$FONT_FILE" ]; then
+  echo "X JetbrainsMono NL Bold font not found"
+  exit 1
+fi
 
 cp "$FONT_FILE" "$FONT_DIR/font.ttf"
 
